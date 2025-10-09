@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     // caso contrário imprime zero
     // Pra rodar:
     // g++ euleriano.cpp -o euleriano
-    // euleriano.exe teste_euleriano.txt
+    // euleriano.exe teste2.txt
 
     // levanta erro caso não sejam passados os argumentos corretos
     if (argc < 2) {
