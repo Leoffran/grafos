@@ -25,14 +25,18 @@ class Grafo {
     // arestas
     int m;
 
+    // indica se o grafo é direcionado
+    bool direcionado = false;
+
     // vetor que armazena o rótulo de cada vertice
     vector<string> labels;
 
+    // mapa auxiliar para converter rótulo → índice
+    unordered_map<string, int> rotuloParaIndice;
+
     // matriz pra armazenar as distancias entre os vertices
     // (vertice1, vertice2, distancia)
-    vector<vector<double>> matriz; 
-
-    // precisa desses 2 armazenamentos diferentes porque o professor pede pra otimizar quando puder
+    vector<vector<double>> matriz;
 
 public:
 
@@ -89,18 +93,23 @@ public:
             stringstream ss_vertice(linha);
 
             // cria as variáveis
-            int index;
             string label;
 
             // separa índice e rótulo
-            ss_vertice >> index >> label;
+            ss_vertice >> label;
 
             // armazena o rótulo
-            labels[index] = label;
+            labels[i] = label;
+
+            // registra o mapeamento rótulo → índice
+            rotuloParaIndice[label] = i;
         }
 
         // pega a linha "*edges" e ignora
         getline(in, linha);
+
+        // detecta se é direcionado
+        direcionado = (linha.find("*arcs") != string::npos);
 
         // inicializa o número de arestas com 0
         m = 0;
@@ -114,22 +123,28 @@ public:
             // cria um stream pra pegar as arestas
             stringstream ss_aresta(linha);
 
-            // os dois vértices
-            int u, v;
+            // rótulos dos vértices
+            string rotuloU, rotuloV;
 
             // o peso da aresta entre eles
             double w;
 
             // pega os vértices e o peso da stream
-            ss_aresta >> u >> v >> w;
+            ss_aresta >> rotuloU >> rotuloV >> w;
+
+            // converte os rótulos para índices numéricos
+            int u = rotuloParaIndice[rotuloU];
+            int v = rotuloParaIndice[rotuloV];
 
             // adiciona na lista de adjacência
             adjacentes[u].push_back({v, w});
-            adjacentes[v].push_back({u, w});
-
-            // adiciona na matriz de adjacência
             matriz[u][v] = w;
-            matriz[v][u] = w;
+
+            // só adiciona o inverso se não for direcionado
+            if (!direcionado) {
+                adjacentes[v].push_back({u, w});
+                matriz[v][u] = w;
+            }
         }
 
         // fecha o arquivo
@@ -175,6 +190,11 @@ public:
     // retorna o peso da aresta (u, v), se não houver retorna infinito
     double peso(int u, int v) {
         return matriz[u][v];
+    }
+
+    // retorna se o grafo é direcionado
+    bool ehDirecionado() const {
+        return direcionado;
     }
 
 };

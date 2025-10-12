@@ -62,12 +62,8 @@ int main(int argc, char* argv[]) {
     for (int i = 1; i <= n; i++) {
 
         // se houver uma aresta entre ele e outro vértice
-        for (int j = 1; j <= n; j++) {
-            if (g.haAresta(i, j) && i != j) {
-
-                // adiciona a direção i -> j
-                adj[i].push_back(j);
-            }
+        for (auto [j, peso] : g.adjacentes[i]) {
+        adj[i].push_back(j);
         }
     }
     
