@@ -92,7 +92,7 @@ public:
             // cria um stream pra separar índice e rótulo
             stringstream ss_vertice(linha);
 
-            // cria as variáveis
+            // cria o rotulo
             string label;
 
             // separa índice e rótulo
