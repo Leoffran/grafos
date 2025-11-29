@@ -93,5 +93,6 @@ int main(int argc, char* argv[]) {
     }
     cout << endl;
 
+    // estudos: https://www.youtube.com/watch?v=Kc2yolMI0u0
     return 0;
 }
